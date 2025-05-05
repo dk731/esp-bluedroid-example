@@ -1,0 +1,483 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 63;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		095EA4E3F6C5BBB9E9F40707 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF5513228E792E7D7572B570 /* WebKit.framework */; };
+		284FFB3EA68D4ADBAF555DCC /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7B237C20C227FEDB7005F0A /* Security.framework */; };
+		3A8176D4B771DFF1E21BFF3F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4915A7A020ED393D0246463 /* CoreGraphics.framework */; };
+		66C89F63E4CE45A8E5BF3212 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 1A6311C5BE983E8ED33F1D06 /* assets */; };
+		7C074542C5B4B82874F68866 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC06D95425F4188C36585538 /* MetalKit.framework */; };
+		872D1EFB2DC9631C00174943 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 872D1EFA2DC9631C00174943 /* CoreBluetooth.framework */; };
+		9D314C80AB34E5D3C637243B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95BA3E03A9041971DF1B90F8 /* UIKit.framework */; };
+		A7649F95A9854E5DF6B39DCD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD5E0AC42DDF48EE7D240457 /* LaunchScreen.storyboard */; };
+		B5F246CC0B7323ED6086EAA2 /* libapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42DD4D8B6DE79E2296329A62 /* libapp.a */; };
+		C7A64FCB5461EA61F516D530 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FFC5BF6D35D0FA2A9D577F8 /* Assets.xcassets */; };
+		CE0E00744E4F13E54AA1F5FE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E601C5A7A91A64F037E6330D /* QuartzCore.framework */; };
+		F7777078D6614224B2CC8798 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FE593AE36C6D361B603C7B2 /* Metal.framework */; };
+		F8FF2D8AC2F8C6F71367F229 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6030FB0CA2DAA856CE4D7830 /* main.mm */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1288BE60CEB52FF55D497019 /* bindings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bindings.h; sourceTree = "<group>"; };
+		1A6311C5BE983E8ED33F1D06 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = SOURCE_ROOT; };
+		42DD4D8B6DE79E2296329A62 /* libapp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libapp.a; sourceTree = "<group>"; };
+		4FFC5BF6D35D0FA2A9D577F8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5C6EECA15A055C1F7A170120 /* main.rs */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.rs; sourceTree = "<group>"; };
+		6030FB0CA2DAA856CE4D7830 /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
+		872D1EFA2DC9631C00174943 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		8FE593AE36C6D361B603C7B2 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		95BA3E03A9041971DF1B90F8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		AC5C91CBCECB9C6222023E2D /* esp-bluedroid-example_iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "esp-bluedroid-example_iOS.entitlements"; sourceTree = "<group>"; };
+		BD5E0AC42DDF48EE7D240457 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C37F2742A39C580A2E8C7F0B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C7B237C20C227FEDB7005F0A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		CC06D95425F4188C36585538 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		D4915A7A020ED393D0246463 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		DF5513228E792E7D7572B570 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		E601C5A7A91A64F037E6330D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		EA56F732EC16C2B46FF479CA /* lib.rs */ = {isa = PBXFileReference; lastKnownFileType = text; path = lib.rs; sourceTree = "<group>"; };
+		F963ED36D496319192FB7828 /* esp-bluedroid-example_iOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; name = "esp-bluedroid-example_iOS.app"; path = "esp-bluedroid-example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4BE723438961DC8E127AA617 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				872D1EFB2DC9631C00174943 /* CoreBluetooth.framework in Frameworks */,
+				B5F246CC0B7323ED6086EAA2 /* libapp.a in Frameworks */,
+				3A8176D4B771DFF1E21BFF3F /* CoreGraphics.framework in Frameworks */,
+				F7777078D6614224B2CC8798 /* Metal.framework in Frameworks */,
+				7C074542C5B4B82874F68866 /* MetalKit.framework in Frameworks */,
+				CE0E00744E4F13E54AA1F5FE /* QuartzCore.framework in Frameworks */,
+				284FFB3EA68D4ADBAF555DCC /* Security.framework in Frameworks */,
+				9D314C80AB34E5D3C637243B /* UIKit.framework in Frameworks */,
+				095EA4E3F6C5BBB9E9F40707 /* WebKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		088AC2406E010A0EB19497E7 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				EA56F732EC16C2B46FF479CA /* lib.rs */,
+				5C6EECA15A055C1F7A170120 /* main.rs */,
+			);
+			name = src;
+			path = ../../src;
+			sourceTree = "<group>";
+		};
+		0941C6C41A41AEED54AA3E6E /* Externals */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Externals;
+			sourceTree = "<group>";
+		};
+		234C624D048ED9E381533A71 = {
+			isa = PBXGroup;
+			children = (
+				1A6311C5BE983E8ED33F1D06 /* assets */,
+				4FFC5BF6D35D0FA2A9D577F8 /* Assets.xcassets */,
+				BD5E0AC42DDF48EE7D240457 /* LaunchScreen.storyboard */,
+				B8D4FECC068AEA7E99CCB444 /* esp-bluedroid-example_iOS */,
+				0941C6C41A41AEED54AA3E6E /* Externals */,
+				AA50F42A0409AE17E0C1B8AB /* Sources */,
+				088AC2406E010A0EB19497E7 /* src */,
+				58C678FB50BF288F30E6D993 /* Frameworks */,
+				DB9898F218BBF0C7DC7E4403 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		58C678FB50BF288F30E6D993 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				872D1EFA2DC9631C00174943 /* CoreBluetooth.framework */,
+				D4915A7A020ED393D0246463 /* CoreGraphics.framework */,
+				42DD4D8B6DE79E2296329A62 /* libapp.a */,
+				8FE593AE36C6D361B603C7B2 /* Metal.framework */,
+				CC06D95425F4188C36585538 /* MetalKit.framework */,
+				E601C5A7A91A64F037E6330D /* QuartzCore.framework */,
+				C7B237C20C227FEDB7005F0A /* Security.framework */,
+				95BA3E03A9041971DF1B90F8 /* UIKit.framework */,
+				DF5513228E792E7D7572B570 /* WebKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		68A845236EC7B4BD93921F55 /* esp-bluedroid-example */ = {
+			isa = PBXGroup;
+			children = (
+				6030FB0CA2DAA856CE4D7830 /* main.mm */,
+				8BC08B89A75E3467FE69F761 /* bindings */,
+			);
+			path = "esp-bluedroid-example";
+			sourceTree = "<group>";
+		};
+		8BC08B89A75E3467FE69F761 /* bindings */ = {
+			isa = PBXGroup;
+			children = (
+				1288BE60CEB52FF55D497019 /* bindings.h */,
+			);
+			path = bindings;
+			sourceTree = "<group>";
+		};
+		AA50F42A0409AE17E0C1B8AB /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				68A845236EC7B4BD93921F55 /* esp-bluedroid-example */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		B8D4FECC068AEA7E99CCB444 /* esp-bluedroid-example_iOS */ = {
+			isa = PBXGroup;
+			children = (
+				AC5C91CBCECB9C6222023E2D /* esp-bluedroid-example_iOS.entitlements */,
+				C37F2742A39C580A2E8C7F0B /* Info.plist */,
+			);
+			path = "esp-bluedroid-example_iOS";
+			sourceTree = "<group>";
+		};
+		DB9898F218BBF0C7DC7E4403 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F963ED36D496319192FB7828 /* esp-bluedroid-example_iOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7852E62302D69C8F4DEE13EF /* esp-bluedroid-example_iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 09F530B825C61B757A71002D /* Build configuration list for PBXNativeTarget "esp-bluedroid-example_iOS" */;
+			buildPhases = (
+				B93D36706EC4BDF82B9E69CB /* Build Rust Code */,
+				6CD2E2CAF6C5610F0559902C /* Sources */,
+				A79176B62C4B398C799B1D84 /* Resources */,
+				4BE723438961DC8E127AA617 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "esp-bluedroid-example_iOS";
+			packageProductDependencies = (
+			);
+			productName = "esp-bluedroid-example_iOS";
+			productReference = F963ED36D496319192FB7828 /* esp-bluedroid-example_iOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8A9C5D66FC8236428C8F12C9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+			};
+			buildConfigurationList = 653575C038CE5B970055B972 /* Build configuration list for PBXProject "esp-bluedroid-example" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 234C624D048ED9E381533A71;
+			minimizedProjectReferenceProxies = 1;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7852E62302D69C8F4DEE13EF /* esp-bluedroid-example_iOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A79176B62C4B398C799B1D84 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C7A64FCB5461EA61F516D530 /* Assets.xcassets in Resources */,
+				A7649F95A9854E5DF6B39DCD /* LaunchScreen.storyboard in Resources */,
+				66C89F63E4CE45A8E5BF3212 /* assets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B93D36706EC4BDF82B9E69CB /* Build Rust Code */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Build Rust Code";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/Externals/x86_64/${CONFIGURATION}/libapp.a",
+				"$(SRCROOT)/Externals/arm64/${CONFIGURATION}/libapp.a",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "npm run -- tauri ios xcode-script -v --platform ${PLATFORM_DISPLAY_NAME:?} --sdk-root ${SDKROOT:?} --framework-search-paths \"${FRAMEWORK_SEARCH_PATHS:?}\" --header-search-paths \"${HEADER_SEARCH_PATHS:?}\" --gcc-preprocessor-definitions \"${GCC_PREPROCESSOR_DEFINITIONS:-}\" --configuration ${CONFIGURATION:?} ${FORCE_COLOR} ${ARCHS:?}";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6CD2E2CAF6C5610F0559902C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F8FF2D8AC2F8C6F71367F229 /* main.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		38B160368347583969BE98AF /* release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = release;
+		};
+		3EDBC5A000EFC9B2B5A2A8AA /* debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = debug;
+		};
+		8CE1E5314A94B48813B8CD98 /* release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ARCHS = arm64;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "esp-bluedroid-example_iOS/esp-bluedroid-example_iOS.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = "L3S5KRK79J";
+				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphoneos*]" = x86_64;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\".\"",
+				);
+				INFOPLIST_FILE = "esp-bluedroid-example_iOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				"LIBRARY_SEARCH_PATHS[arch=arm64]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Externals/arm64/$(CONFIGURATION)",
+					"$(SDKROOT)/usr/lib/swift",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)",
+				);
+				"LIBRARY_SEARCH_PATHS[arch=x86_64]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Externals/x86_64/$(CONFIGURATION)",
+					"$(SDKROOT)/usr/lib/swift",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.esp-bluedroid-example.app;
+				PRODUCT_NAME = "esp-bluedroid-example";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = arm64;
+			};
+			name = release;
+		};
+		D171E2845EB154841454C145 /* debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ARCHS = arm64;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "esp-bluedroid-example_iOS/esp-bluedroid-example_iOS.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = "L3S5KRK79J";
+				ENABLE_BITCODE = NO;
+				"EXCLUDED_ARCHS[sdk=iphoneos*]" = x86_64;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\".\"",
+				);
+				INFOPLIST_FILE = "esp-bluedroid-example_iOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				"LIBRARY_SEARCH_PATHS[arch=arm64]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Externals/arm64/$(CONFIGURATION)",
+					"$(SDKROOT)/usr/lib/swift",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)",
+				);
+				"LIBRARY_SEARCH_PATHS[arch=x86_64]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Externals/x86_64/$(CONFIGURATION)",
+					"$(SDKROOT)/usr/lib/swift",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.esp-bluedroid-example.app;
+				PRODUCT_NAME = "esp-bluedroid-example";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = arm64;
+			};
+			name = debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		09F530B825C61B757A71002D /* Build configuration list for PBXNativeTarget "esp-bluedroid-example_iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D171E2845EB154841454C145 /* debug */,
+				8CE1E5314A94B48813B8CD98 /* release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = debug;
+		};
+		653575C038CE5B970055B972 /* Build configuration list for PBXProject "esp-bluedroid-example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3EDBC5A000EFC9B2B5A2A8AA /* debug */,
+				38B160368347583969BE98AF /* release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8A9C5D66FC8236428C8F12C9 /* Project object */;
+}
