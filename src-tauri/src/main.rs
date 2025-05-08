@@ -2,5 +2,6 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    esp_bluedroid_example_lib::run()
+    esp_bluedroid_example_lib::run();
+    tokio::spawn(esp_bluedroid_example_lib::ble_monitoring());
 }

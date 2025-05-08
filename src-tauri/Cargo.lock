@@ -1013,6 +1013,8 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "btleplug",
+ "lazy_static",
+ "log",
  "serde",
  "serde_json",
  "tauri",

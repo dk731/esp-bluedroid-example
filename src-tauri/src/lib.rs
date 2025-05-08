@@ -3,7 +3,53 @@ use std::time::Duration;
 use anyhow;
 use btleplug::api::{Central, Manager as _, Peripheral, ScanFilter};
 use btleplug::platform::Manager;
+use lazy_static::lazy_static;
 use tokio::time;
+
+lazy_static! {
+    static ref TOKIO_RUNTIME: tokio::runtime::Runtime = {
+        let mut builder = tokio::runtime::Builder::new_multi_thread();
+        builder.worker_threads(4);
+        builder.enable_all();
+        builder.build().unwrap()
+    };
+    static ref MANAGER: btleplug::platform::Manager =
+        TOKIO_RUNTIME.block_on(Manager::new()).unwrap();
+    static ref ADAPTER_LIST: Vec<btleplug::platform::Adapter> =
+        TOKIO_RUNTIME.block_on(MANAGER.adapters()).unwrap();
+    static ref ADAPTER: &'static btleplug::platform::Adapter = &ADAPTER_LIST[0];
+}
+
+pub async fn ble_monitoring() -> anyhow::Result<()> {
+    log::info!("Starting BLE monitoring...");
+
+    loop {
+        log::info!("Starting scan on {}...", ADAPTER.adapter_info().await?);
+        ADAPTER
+            .start_scan(ScanFilter::default())
+            .await
+            .expect("Can't scan BLE adapter for connected devices...");
+        time::sleep(Duration::from_secs(1)).await;
+
+        let peripherals = ADAPTER.peripherals().await?;
+
+        for peripheral in peripherals.iter() {
+            let properties = peripheral.properties().await?;
+            let is_connected = peripheral.is_connected().await?;
+            let local_name = properties
+                .unwrap()
+                .local_name
+                .unwrap_or(String::from("(peripheral name unknown)"));
+            log::info!(
+                "Peripheral {:?} is connected: {:?}",
+                local_name,
+                is_connected
+            );
+        }
+    }
+
+    Ok(())
+}
 
 async fn ble_test() -> anyhow::Result<()> {
     println!("Starting BLE test...");
