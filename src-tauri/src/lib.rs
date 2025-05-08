@@ -1,13 +1,24 @@
 use std::time::Duration;
 
 use anyhow;
-use btleplug::api::{Central, Manager as _, Peripheral, ScanFilter};
+use btleplug::api::{Central, Manager as _, Peripheral, ScanFilter, WriteType};
 use btleplug::platform::Manager;
 use lazy_static::lazy_static;
+use serde::{Deserialize, Serialize};
+use tauri::{AppHandle, Emitter};
+use tokio::sync::RwLock;
 use tokio::time;
+use uuid::Uuid;
+
+#[derive(Serialize, Deserialize, Debug)]
+struct LedConfiguration {
+    pwm_duty: f32,
+    pwm_frequency: f32,
+    enabled: bool,
+}
 
 lazy_static! {
-    static ref TOKIO_RUNTIME: tokio::runtime::Runtime = {
+    pub static ref TOKIO_RUNTIME: tokio::runtime::Runtime = {
         let mut builder = tokio::runtime::Builder::new_multi_thread();
         builder.worker_threads(4);
         builder.enable_all();
@@ -17,14 +28,55 @@ lazy_static! {
         TOKIO_RUNTIME.block_on(Manager::new()).unwrap();
     static ref ADAPTER_LIST: Vec<btleplug::platform::Adapter> =
         TOKIO_RUNTIME.block_on(MANAGER.adapters()).unwrap();
-    static ref ADAPTER: &'static btleplug::platform::Adapter = &ADAPTER_LIST[0];
+    pub static ref ADAPTER: &'static btleplug::platform::Adapter = &ADAPTER_LIST[0];
+    pub static ref ESP_PERIPHERAL: RwLock<Option<btleplug::platform::Peripheral>> =
+        RwLock::new(None);
+    pub static ref APP_HANDLE: RwLock<Option<AppHandle>> = RwLock::new(None);
 }
 
+const ESP_BLE_NAME: &str = "esp-bluedroid LED Example";
+
 pub async fn ble_monitoring() -> anyhow::Result<()> {
-    log::info!("Starting BLE monitoring...");
+    println!("Starting BLE monitoring...");
 
     loop {
-        log::info!("Starting scan on {}...", ADAPTER.adapter_info().await?);
+        time::sleep(Duration::from_secs(3)).await;
+
+        if ESP_PERIPHERAL.read().await.is_some() {
+            println!("ESP peripheral is already connected, checking connection status...");
+
+            let is_connected = ESP_PERIPHERAL
+                .read()
+                .await
+                .as_ref()
+                .unwrap()
+                .is_connected()
+                .await?;
+
+            if is_connected {
+                println!("ESP peripheral is connected, skipping scan...");
+                APP_HANDLE
+                    .read()
+                    .await
+                    .as_ref()
+                    .unwrap()
+                    .emit("connection-status", true)?;
+            } else {
+                println!("Sending event of disconnected");
+                *ESP_PERIPHERAL.write().await = None;
+
+                APP_HANDLE
+                    .read()
+                    .await
+                    .as_ref()
+                    .unwrap()
+                    .emit("connection-status", false)?;
+            }
+
+            continue;
+        }
+
+        println!("Starting scan on {}...", ADAPTER.adapter_info().await?);
         ADAPTER
             .start_scan(ScanFilter::default())
             .await
@@ -32,6 +84,7 @@ pub async fn ble_monitoring() -> anyhow::Result<()> {
         time::sleep(Duration::from_secs(1)).await;
 
         let peripherals = ADAPTER.peripherals().await?;
+        let mut found = false;
 
         for peripheral in peripherals.iter() {
             let properties = peripheral.properties().await?;
@@ -40,100 +93,107 @@ pub async fn ble_monitoring() -> anyhow::Result<()> {
                 .unwrap()
                 .local_name
                 .unwrap_or(String::from("(peripheral name unknown)"));
-            log::info!(
-                "Peripheral {:?} is connected: {:?}",
-                local_name,
-                is_connected
-            );
-        }
-    }
 
-    Ok(())
-}
+            if local_name == ESP_BLE_NAME {
+                found = true;
 
-async fn ble_test() -> anyhow::Result<()> {
-    println!("Starting BLE test...");
+                if !is_connected {
+                    println!("Connecting to peripheral {:?}...", &local_name);
+                    if let Err(err) = peripheral.connect().await {
+                        eprintln!("Error connecting to peripheral, skipping: {}", err);
+                        continue;
+                    }
+                }
 
-    let manager = Manager::new().await?;
-    let adapter_list = manager.adapters().await?;
-    if adapter_list.is_empty() {
-        eprintln!("No Bluetooth adapters found");
-    }
-    println!("Found {} Bluetooth adapters", adapter_list.len());
+                let is_connected = peripheral.is_connected().await?;
+                println!(
+                    "Now connected ({:?}) to peripheral {:?}...",
+                    is_connected, &local_name
+                );
+                *ESP_PERIPHERAL.write().await = Some(peripheral.clone());
 
-    let adapter = &adapter_list[0];
-
-    println!("Starting scan on {}...", adapter.adapter_info().await?);
-    adapter
-        .start_scan(ScanFilter::default())
-        .await
-        .expect("Can't scan BLE adapter for connected devices...");
-    time::sleep(Duration::from_secs(1)).await;
-
-    let peripherals = adapter.peripherals().await?;
-
-    for peripheral in peripherals.iter() {
-        let properties = peripheral.properties().await?;
-        let is_connected = peripheral.is_connected().await?;
-        let local_name = properties
-            .unwrap()
-            .local_name
-            .unwrap_or(String::from("(peripheral name unknown)"));
-        println!(
-            "Peripheral {:?} is connected: {:?}",
-            local_name, is_connected
-        );
-        if !is_connected {
-            println!("Connecting to peripheral {:?}...", &local_name);
-            if let Err(err) = peripheral.connect().await {
-                eprintln!("Error connecting to peripheral, skipping: {}", err);
-                continue;
+                if is_connected {
+                    println!("Sending event of connected");
+                    APP_HANDLE
+                        .read()
+                        .await
+                        .as_ref()
+                        .unwrap()
+                        .emit("connection-status", true)?;
+                }
             }
         }
-        let is_connected = peripheral.is_connected().await?;
-        println!(
-            "Now connected ({:?}) to peripheral {:?}...",
-            is_connected, &local_name
-        );
-        peripheral.discover_services().await?;
-        println!("Discover peripheral {:?} services...", &local_name);
-        for service in peripheral.services() {
-            println!(
-                "Service UUID {}, primary: {}",
-                service.uuid, service.primary
-            );
-            for characteristic in service.characteristics {
-                println!("  {:?}", characteristic);
-            }
-        }
-        if is_connected {
-            println!("Disconnecting from peripheral {:?}...", &local_name);
-            peripheral
-                .disconnect()
+
+        if !found {
+            *ESP_PERIPHERAL.write().await = None;
+
+            println!("Sending event of disconnected");
+            APP_HANDLE
+                .read()
                 .await
-                .expect("Error disconnecting from BLE peripheral");
+                .as_ref()
+                .unwrap()
+                .emit("connection-status", false)?;
         }
     }
 
     Ok(())
 }
 
-// Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
-fn greet(name: &str) -> String {
-    tokio::runtime::Runtime::new()
-        .expect("Failed to create runtime")
-        .block_on(ble_test())
-        .expect("Failed to run BLE test");
+async fn update_led_config(led_config: LedConfiguration) {
+    println!("Updating LED configuration: {:?}", led_config);
 
-    format!("Hello, {}! You've been greeted from Rust! !!!!!!####", name)
+    let esp_lock = ESP_PERIPHERAL.read().await;
+    let Some(esp) = esp_lock.as_ref() else {
+        println!("ESP peripheral not found!");
+        return;
+    };
+    if let Err(err) = esp.discover_services().await {
+        println!("Error discovering services: {}", err);
+        return;
+    }
+
+    let characteristics = esp.characteristics();
+    let Some(led_config_char) = characteristics
+        .iter()
+        .find(|el| el.uuid == Uuid::from_u128(42424242))
+    else {
+        println!("LED configuration characteristic not found!");
+        return;
+    };
+
+    let Ok(new_config_bytes) =
+        bincode::serde::encode_to_vec(led_config, bincode::config::standard())
+    else {
+        println!("Failed to serialize LED configuration!");
+        return;
+    };
+    esp.write(
+        led_config_char,
+        &new_config_bytes,
+        WriteType::WithoutResponse,
+    )
+    .await
+    .unwrap();
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    lazy_static::initialize(&ADAPTER);
+
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![update_led_config])
+        .setup(|app| {
+            TOKIO_RUNTIME.block_on(async {
+                *APP_HANDLE.write().await = Some(app.handle().clone());
+            });
+
+            TOKIO_RUNTIME.spawn(ble_monitoring());
+
+            Ok(())
+        })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

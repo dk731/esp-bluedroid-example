@@ -27,3 +27,5 @@ anyhow = { version = "1.0.98" }
 tokio = { version = "1.44", features = ["full"] }
 lazy_static = "1.5.0"
 log = "0.4.27"
+uuid = "1.16.0"
+bincode = { version = "2.0.1", features = ["serde"] }

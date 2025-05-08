@@ -1,160 +1,283 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { invoke } from "@tauri-apps/api/core";
+import { listen } from "@tauri-apps/api/event";
 
-const greetMsg = ref("");
-const name = ref("");
+// Connection status
+let isConnected = ref(false);
 
-async function greet() {
-  // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-  greetMsg.value = await invoke("greet", { name: name.value });
-}
+// Control values
+const isEnabled = ref(false);
+const frequency = ref(1000);
+const dutyCycle = ref(50);
+
+// Throttling mechanism
+let updateTimeout: number | null = null;
+const THROTTLE_DELAY = 300; // 100ms throttle delay
+
+// Listen for connection status events
+listen<boolean>("connection-status", (event) => {
+  console.log("Connection status event received: ", event.payload);
+  isConnected.value = event.payload;
+});
+
+// Function to update LED configuration
+const updateLedConfig = () => {
+  if (!isConnected.value) return;
+
+  invoke("update_led_config", {
+    ledConfig: {
+      pwm_duty: parseFloat(dutyCycle.value.toString()) / 100,
+      pwm_frequency: parseFloat(frequency.value.toString()),
+      enabled: isEnabled.value,
+    },
+  })
+    .then((response) => {
+      console.log("Control values updated:", response);
+    })
+    .catch((error) => {
+      console.error("Error updating control values:", error);
+    });
+};
+
+// Throttled update function
+const throttledUpdate = () => {
+  if (updateTimeout === null) {
+    updateLedConfig();
+
+    updateTimeout = window.setTimeout(() => {
+      updateTimeout = null;
+      // If values changed during throttle period, update again
+      updateLedConfig();
+    }, THROTTLE_DELAY);
+  }
+};
+
+// Watch for changes and apply throttling
+watch(
+  [isEnabled, frequency, dutyCycle],
+  () => {
+    throttledUpdate();
+  },
+  { deep: true }
+);
 </script>
 
 <template>
-  <main class="container">
-    <h1>Welcome to Tauri + Vue</h1>
+  <div class="app-container">
+    <header>
+      <h1>ESP-Bluedroid LED Controller</h1>
+    </header>
 
-    <div class="row">
-      <a href="https://vitejs.dev" target="_blank">
-        <img src="/vite.svg" class="logo vite" alt="Vite logo" />
-      </a>
-      <a href="https://tauri.app" target="_blank">
-        <img src="/tauri.svg" class="logo tauri" alt="Tauri logo" />
-      </a>
-      <a href="https://vuejs.org/" target="_blank">
-        <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-      </a>
-    </div>
-    <p>Click on the Tauri, Vite, and Vue logos to learn more.</p>
+    <main>
+      <div class="status-card">
+        <div class="status-indicator" :class="{ connected: isConnected }"></div>
+        <p>Status: {{ isConnected ? "Connected" : "Disconnected" }}</p>
+      </div>
 
-    <form class="row" @submit.prevent="greet">
-      <input id="greet-input" v-model="name" placeholder="Enter a name..." />
-      <button type="submit">Greet</button>
-    </form>
-    <p>{{ greetMsg }}</p>
-  </main>
+      <div class="control-card">
+        <button
+          @click="isEnabled = !isEnabled"
+          :class="{ enabled: isEnabled }"
+          :disabled="!isConnected"
+        >
+          {{ isEnabled ? "Disable" : "Enable" }}
+        </button>
+      </div>
+
+      <div class="slider-card">
+        <div class="slider-container">
+          <label for="slider1">Duty Cycle: {{ dutyCycle }}%</label>
+          <input
+            type="range"
+            id="slider1"
+            min="0"
+            max="100"
+            v-model="dutyCycle"
+            :disabled="!isEnabled || !isConnected"
+          />
+        </div>
+
+        <div class="slider-container">
+          <label for="slider2">Frequency: {{ frequency }} Hz</label>
+          <input
+            type="range"
+            id="slider2"
+            step="25"
+            min="1000"
+            max="5000"
+            v-model="frequency"
+            :disabled="!isEnabled || !isConnected"
+          />
+        </div>
+      </div>
+    </main>
+  </div>
 </template>
 
-<style scoped>
-.logo.vite:hover {
-  filter: drop-shadow(0 0 2em #747bff);
-}
-
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #249b73);
-}
-
-</style>
 <style>
 :root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 400;
-
-  color: #0f0f0f;
-  background-color: #f6f6f6;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+  --primary-color: #4a6da7;
+  --primary-light: #6989c3;
+  --primary-dark: #345286;
+  --accent-color: #f39c12;
+  --text-color: #333;
+  --bg-color: #f5f7fa;
+  --card-bg: #ffffff;
+  --disabled-color: #cccccc;
 }
 
-.container {
+* {
   margin: 0;
-  padding-top: 10vh;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.app-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  min-height: 100vh;
+  max-width: 100%;
+  padding: 1rem;
+}
+
+header {
   text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: 0.75s;
-}
-
-.logo.tauri:hover {
-  filter: drop-shadow(0 0 2em #24c8db);
-}
-
-.row {
-  display: flex;
-  justify-content: center;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-
-a:hover {
-  color: #535bf2;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 h1 {
-  text-align: center;
+  font-size: 1.5rem;
+  color: var(--primary-dark);
 }
 
-input,
-button {
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.status-card,
+.control-card,
+.slider-card {
+  background-color: var(--card-bg);
   border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.status-indicator {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #ff4b4b;
+  margin-right: 8px;
+  display: inline-block;
+}
+
+.status-indicator.connected {
+  background-color: #4caf50;
+}
+
+.status-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   font-weight: 500;
-  font-family: inherit;
-  color: #0f0f0f;
-  background-color: #ffffff;
-  transition: border-color 0.25s;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 }
 
 button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 24px;
+  font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 150px;
 }
 
 button:hover {
-  border-color: #396cd8;
-}
-button:active {
-  border-color: #396cd8;
-  background-color: #e8e8e8;
+  background-color: var(--primary-light);
 }
 
-input,
-button {
+button.enabled {
+  background-color: var(--accent-color);
+}
+
+.slider-container {
+  width: 100%;
+  margin: 10px 0;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+input[type="range"] {
+  width: 100%;
+  height: 10px;
+  border-radius: 5px;
+  background: #e0e0e0;
   outline: none;
+  -webkit-appearance: none;
 }
 
-#greet-input {
-  margin-right: 5px;
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  cursor: pointer;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    color: #f6f6f6;
-    background-color: #2f2f2f;
+input[type="range"]:disabled {
+  background: var(--disabled-color);
+}
+
+input[type="range"]:disabled::-webkit-slider-thumb {
+  background: #999;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 480px) {
+  .app-container {
+    padding: 0.5rem;
   }
 
-  a:hover {
-    color: #24c8db;
+  h1 {
+    font-size: 1.2rem;
   }
 
-  input,
+  .status-card,
+  .control-card,
+  .slider-card {
+    padding: 1rem;
+  }
+
   button {
-    color: #ffffff;
-    background-color: #0f0f0f98;
-  }
-  button:active {
-    background-color: #0f0f0f69;
+    padding: 8px 16px;
+    font-size: 0.9rem;
   }
 }
-
 </style>
