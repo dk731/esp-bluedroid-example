@@ -13,7 +13,7 @@ const dutyCycle = ref(50);
 
 // Throttling mechanism
 let updateTimeout: number | null = null;
-const THROTTLE_DELAY = 300; // 100ms throttle delay
+const THROTTLE_DELAY = 200;
 
 // Listen for connection status events
 listen<boolean>("connection-status", (event) => {
